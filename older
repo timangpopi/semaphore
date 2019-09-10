@@ -2,7 +2,7 @@
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 git clone https://github.com/najahiiii/priv-toolchains.git -b non-elf/gcc-9.2.0/arm gcc32
 git clone https://github.com/najahiiii/priv-toolchains.git -b non-elf/gcc-9.2.0/arm64 gcc
-git clone https://github.com/NusantaraDevs/DragonTC.git -b 8.0 dtc
+git clone https://github.com/NusantaraDevs/DragonTC.git -b 8.0-old dtc
 git clone https://github.com/fadlyas/anykernel3 anu
 CT="$(pwd)/dtc/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
