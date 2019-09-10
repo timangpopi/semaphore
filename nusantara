@@ -1,17 +1,17 @@
 #!bin/bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-git clone https://github.com/najahiiii/priv-toolchains.git -b non-elf/gcc-9.2.0/arm gcc32
-git clone https://github.com/najahiiii/priv-toolchains.git -b non-elf/gcc-9.2.0/arm64 gcc
-git clone https://github.com/NusantaraDevs/clang.git clang
+git clone https://github.com/najahiiii/aarch64-linux-gnu -b 4.9-32-mirror gcc32
+git clone https://github.com/najahiiii/aarch64-linux-gnu -b 4.9-mirror gcc
+git clone https://github.com/NusantaraDevs/DragonTC -b 8.0-old dtc
 git clone https://github.com/fadlyas/anykernel3 anu
 THREAD="-j32"
-LOAD="-l32"
+LOAD="-l12"
 ARM="arm64"
 PATH="$(pwd)/clang/bin:${PATH}"
 CC="clang"
 CT="$(pwd)/clang/bin/clang"
-GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-GCC32="$(pwd)/gcc32/bin/arm-linux-gnueabi-"
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
 curl -s -F chat_id=-1001158707255 -F sticker="CAADBQAD3AADfULDLpHzWZltpdJ5FgQ" https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendSticker
 curl -s -X POST https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage?chat_id=-1001158707255 -d "disable_web_page_preview=true" -d "parse_mode=html&text=<b>SteelHeart CI new build is up!!</b>%0A<b>Compile Started !!</b>%0A<b>For device</b> <code>Rolex (Redmi 4A)</code>%0A<b>For Android Oreo or Android Pie</b>%0A<b>Under Commit</b> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Arm64Compiler</b> <code>$(${GCC}gcc --version | head -n 1)</code>%0A<b>ArmCompiler</b> <code>$(${GCC32}gcc --version | head -n 1)</code>%0A<b>Clang</b> <code>$(${CT} --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Started on</b> <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Tree:</b> #Sunny"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
@@ -20,7 +20,6 @@ BUILD_START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=mmhmdfas
 export KBUILD_BUILD_HOST=steelheart-pure
-export LD_LIBRARY_PATH=$(pwd)/clang/bin/../lib:$PATH
 # Fin Error
 function finerr() {
         curl -s -X POST https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage?chat_id=-1001158707255 -d "disable_web_page_preview=true" -d "parse_mode=html&text=Build throw an error(s)"
