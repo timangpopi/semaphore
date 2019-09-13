@@ -1,8 +1,8 @@
 #!bin/bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-git clone -j32 https://github.com/najahiiii/priv-toolchains -b non-elf/gcc-10.0.0/arm gcc32
-git clone -j32 https://github.com/najahiiii/priv-toolchains -b non-elf/gcc-10.0.0/arm64 gcc
-git clone -j32 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 dtc
+git clone https://github.com/najahiiii/priv-toolchains -b non-elf/gcc-9.2.0/arm64 gcc
+git clone https://github.com/najahiiii/priv-toolchains/tree/non-elf/gcc-9.2.0/arm gcc32
+git clone -j32 https://github.com/NusantaraDevs/DragonTC dtc
 git clone https://github.com/fadlyas/anykernel3
 CT="$(pwd)/dtc/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
@@ -13,9 +13,7 @@ tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 export ARCH=arm64
 export KBUILD_BUILD_USER=mmhmdfas
-export KBUILD_BUILD_HOST=steelheart-pure
-export USE_CCACHE=1
-export CACHE_DIR=~/.ccache
+export KBUILD_BUILD_HOST=CircleCI-VM
 # Fin Error
 function finerr() {
         curl -s -X POST https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage?chat_id=-1001158707255 -d "disable_web_page_preview=true" -d "parse_mode=html&text=Build throw an error(s)"
