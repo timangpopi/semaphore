@@ -10,7 +10,6 @@ IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
 TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
-UTSV=$(echo $UTS | cut -c 1-35)
 export TZ=":Asia/Jakarta"
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
@@ -27,7 +26,7 @@ function sendinfo() {
                         -d chat_id=-1001158707255 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>SteelHeart CI new build is up</b>!!%0AFor device: <code>Xiaomi Redmi 4A</code>%0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>  %0AKernel Version: <code>3.18.140</code>%0AFor Android: <code>9.0-10.0</code>%0ALatest commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>CompilerAarch64:</b> <code>$(${GCC}gcc --version | head -n 1)</code>%0A<b>CompilerArm:</b> <code>$(${GCC32}gcc --version | head -n 1)</code>%0ABuild Status: #untested"
+                        -d text="<b>SteelHeart CI new build is up</b>!!%0AFor device: <code>Xiaomi Redmi 4A</code>%0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AKernel Version: <code>3.18.140</code>%0AFor Android: <code>8.1-9.0</code>%0ALatest commit: <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0ACompiler: <code>$(${GCC}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0ABuild Status: #untested"
 }
 # Send private info
 function sendpriv() {
@@ -35,7 +34,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart Started%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0AJob Name: Compile Kornol%0A<b>Pipeline jobs</b> <a href='${CIRCLE_BUILD_URL}'>here</a>%0ABuild Number=${NUM}."
+                        -d text="SteelHeart Started%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0AJob Name: Compile Kornol%0A<b>Pipeline jobs</b> <a href='${CIRCLE_BUILD_URL}'>here</a>%0ABuild Number:${NUM}."
 }
 # Push kernel to channel
 function push() {
@@ -45,7 +44,7 @@ function push() {
 			-F chat_id="-1001158707255" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
-			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | #Nightly |<code>$UTS</code>"
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). |<code>$UTS</code>"
 }
 # Fin Error
 function finerr() {
