@@ -34,7 +34,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart Started%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0AJob Name: Compile Kornol%0A<b>Pipeline jobs</b> <a href='${CIRCLE_BUILD_URL}'>here</a>%0ABuild Number:${NUM}."
+                        -d text="SteelHeart Started%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0AJob Name: Compile Kornol%0APipeline jobs <a href='${CIRCLE_BUILD_URL}'>here</a>%0ABuild Number:${NUM}."
 }
 # Push kernel to channel
 function push() {
@@ -44,7 +44,7 @@ function push() {
 			-F chat_id="-1001158707255" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
-			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). |<code>$UTS</code>"
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s).%0A<code>$UTS</code>"
 }
 # Fin Error
 function finerr() {
