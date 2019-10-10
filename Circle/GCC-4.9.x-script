@@ -1,7 +1,7 @@
 #!bin/bash
 echo "Clone Dependencies"
 git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r39 --depth=1 gcc
-git clone --quiet -j32 https://github.com/najahiiii/aarch64-linux-gnu.git --depth=1 -b 4.9-32-mirror gcc32
+git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-9.0.0_r39 --depth=1 gcc32
 git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
 echo "done"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
@@ -14,6 +14,8 @@ export TZ=":Asia/Jakarta"
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
 export KBUILD_BUILD_HOST=SteelHeart-CI-${NUM}y
+export USE_CCACHE=1
+export CACHE_DIR=~/.ccache
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendSticker" \
