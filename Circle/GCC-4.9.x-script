@@ -36,7 +36,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart Started%0AStarted on <code>$(TZ=Asia/Jakarta date)</code>%0AJob Name: Compile Kornol%0APipeline jobs <a href='${CIRCLE_BUILD_URL}'>here</a>%0ABuild Number=#${NUM}."
+                        -d text="SteelHeart Started%0AStarted on [<code>$(TZ=Asia/Jakarta date)</code>]%0APipeline jobs <a href='${CIRCLE_BUILD_URL}'>here</a>%0A#${NUM}."
 }
 # Push kernel to channel
 function push() {
