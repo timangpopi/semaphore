@@ -1,7 +1,7 @@
 #!bin/bash
 echo "Clone Dependencies"
 git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_host_linux-x86_clang-5900059 -b 9.0 --depth=1 clang
-git clone --quiet -j32 https://github.com/fadlyas07/android-prebuilts-aarch64-mirror -b linaro-7.4.1 --depth=1 linaro
+git clone --quiet -j32 https://github.com/fadlyas07/android-prebuilts-aarch64-mirror -b linaro-7.4.1 --depth=1 gpu
 git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
 echo "2nd Build"
 git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r39 --depth=1 gcc
@@ -18,7 +18,7 @@ else
      echo "Its beta release build"
 fi
 CT="$(pwd)/clang/bin/clang"
-LINARO="$(pwd)/linaro/bin/aarch64-linux-gnu-"
+GPU="$(pwd)/gpu/bin/aarch64-linux-gnu-"
 GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
 GCC32="$(pwd)/gcc32/bin/aarch64-linux-androideabi-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
@@ -76,7 +76,7 @@ function finerr() {
 # Compile plox
 function compile() {
         make -s -C $(pwd) O=out rolex_defconfig
-        make -s -C $(pwd) CC=${CT} CROSS_COMPILE=${LINARO} O=out -j60 -l50 2>&1| tee build.log
+        make -s -C $(pwd) CC=${CT} CROSS_COMPILE=${GPU} O=out -j60 -l50 2>&1| tee build.log
         UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
             if ! [ -a $IMAGE ]; then
                 finerr
