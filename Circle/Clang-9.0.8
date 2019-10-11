@@ -28,7 +28,7 @@ function sendinfo() {
                         -d chat_id=-1001158707255 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>SteelHeart CI new build is up</b>!!%0AFor device: <code>Xiaomi Redmi 4A</code>%0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AKernel Version: <code>3.18.140</code>%0AFor Android: <code>8.1-9.0</code>%0ALatest commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiler: <code>$(${GCC}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0ABuild Status: #Untested"
+                        -d text="<b>SteelHeart CI new build is up</b>!!%0AFor device: <code>Xiaomi Redmi 4A</code>%0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AKernel Version: <code>3.18.140</code>%0AFor Android: <code>8.1-9.0</code>%0ACommit message <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiler: <code>$(${GCC}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
 }
 # Send private info
 function sendpriv() {
@@ -36,7 +36,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart new build coming!%0A${CIRCLE_SHA1}%0ACompile di mulai pada [<code>$(TZ=Asia/Jakarta date)</code>]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
+                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [<code>$(TZ=Asia/Jakarta date)</code>]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
 }
 # Push kernel to channel
 function push() {
