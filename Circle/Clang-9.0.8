@@ -6,7 +6,6 @@ git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykern
 echo "done"
 CT="$(pwd)/clang/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-SHA=$(echo $CIRCLE_SHA1 | cut -c 1-12)
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
 TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
@@ -37,7 +36,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart new build coming!%0AHARAP SABAR GAN!!%0ACompile di mulai pada [<code>$(TZ=Asia/Jakarta date)</code>]%0ASHA [ $SHA ..]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
+                        -d text="SteelHeart new build coming!%0A${CIRCLE_SHA1}%0ACompile di mulai pada [<code>$(TZ=Asia/Jakarta date)</code>]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
 }
 # Push kernel to channel
 function push() {
