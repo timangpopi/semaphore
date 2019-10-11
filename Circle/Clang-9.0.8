@@ -4,6 +4,15 @@ git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_hos
 git clone --quiet -j32 https://github.com/fadlyas07/android-prebuilts-aarch64-mirror -b linaro-7.4.1 --depth=1 gcc
 git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
 echo "done"
+if [ "$is_test" = true ]; then
+     echo "Its alpha test build"
+     unset chat_id
+     unset token
+     export chat_id=784548477
+     export token='https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE'
+else
+     echo "Its beta release build"
+fi
 CT="$(pwd)/clang/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
@@ -55,7 +64,7 @@ function finerr() {
 			-d chat_id="-1001158707255" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Unfortunately build throw an error(s)."
+			-d text="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s) but it's error..."
         exit 1
 }
 # Compile plox
@@ -72,9 +81,13 @@ function compile() {
 }
 # Zipping
 function zipping() {
-        cd anykernel3
-        zip -r9 Steelheart-rolex-${TANGGAL}.zip *
-        cd . . 
+    cd anykernel3 || exit 1
+    if [ "$is_test" = true ]; then
+        zip -r9 Steelheart-rolex-ALPHA-"${TANGGAL}".zip *
+    else
+        zip -r9 Steelheart-clang-"${TANGGAL}".zip *
+    fi
+    cd ... #uwow
 }
 rm -rf out
 sticker
