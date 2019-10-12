@@ -4,16 +4,7 @@ git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_hos
 git clone --quiet -j32 https://github.com/fadlyas07/android-prebuilts-aarch64-mirror -b linaro-7.4.1 --depth=1 gcc
 git clone --quiet -j32 https://github.com/adekmaulana/arm-linux-androideabi --depth=1 gcc32
 git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
-echo "done"
-if [ "$is_test" = true ]; then
-     echo "Its alpha test build"
-     unset chat_id
-     unset token
-     export chat_id=784548477
-     export token='https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE'
-else
-     echo "Its beta release build"
-fi
+echo "uWoW"
 CT="$(pwd)/clang/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 GCC32="$(pwd)/gcc32/bin/arm-unknown-linux-androideabi-"
@@ -52,13 +43,15 @@ function sendpriv() {
 # Push kernel to channel
 function push() {
         cd anykernel3
-        ZIP=$(echo Steelheart-rol*.zip)
-	cp $ZIP steelheart-private-"${TANGGAL}".zip
-	PRIV=$(echo steelheart-priv*.zip)
-	curl -F document=@$PRIV "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
-			-F chat_id="-1001158707255" \
+    ZIP=$(echo Steel *.zip)
+	PRIV=$(echo Build *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
-			-F chat_id="-1001158707255"
+			-F chat_id="-1001158707255" \
+	curl -F document=@$PRIV "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
+			-F chat_id="784548477" \
+			-F "disable_web_page_preview=true" \
+			-F "parse_mode=markdown" \
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
 }
 # Fin prober
 function finerr() {
@@ -96,10 +89,9 @@ function compile() {
 # Zipping
 function zipping() {
     cd anykernel3 || exit 1
-    if [ "$is_test" = true ]; then
-        zip -r9 Steelheart-rolex-ALPHA-"${TANGGAL}".zip *
-    else
-        zip -r9 Steelheart-rolex-"${TANGGAL}".zip *
+    zip -r9 Steelheart-rolex-"${TANGGAL}".zip *
+    cp Steel * .zip Build-private-"${TANGGAL}".zip
+    paste
     fi
     cd ... #uwow
 }
@@ -112,4 +104,4 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-fin
+finprob
