@@ -93,7 +93,7 @@ function zipping() {
     cp Steel * .zip Build-private-"${TANGGAL}".zip
     paste
     fi
-    cd ... #uwow
+    cd .. #uwow
 }
 rm -rf out
 sticker
