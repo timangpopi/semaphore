@@ -49,14 +49,6 @@ function push() {
 			-F "parse_mode=markdown" \
 			-F text="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
 }
-# Fin prober
-function finerr() {
-        curl -s -X POST "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage" \
-			-d chat_id="-1001158707255" \
-			-d "disable_web_page_preview=true" \
-			-d "parse_mode=markdown" \
-			-d text="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
-}
 # Fin Error
 function finerr() {
         paste
@@ -86,7 +78,6 @@ function compile() {
 function zipping() {
     cd anykernel3 || exit 1
     zip -r9 Steelheart-rolex-"${TANGGAL}".zip *
-    fi
     cd .. #uwow
 }
 rm -rf out
