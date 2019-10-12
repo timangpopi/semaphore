@@ -2,19 +2,20 @@
 echo "Clone Dependencies"
 git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_host_linux-x86_clang-5900059 -b 9.0 --depth=1 clang
 git clone --quiet -j32 https://github.com/fadlyas07/android-prebuilts-aarch64-mirror -b linaro-7.4.1 --depth=1 gcc
+git clone --quiet -j32 https://github.com/adekmaulana/arm-linux-androideabi --depth=1 gcc32
 git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
-echo "done"
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
      unset chat_id
      unset token
      export chat_id=784548477
-     export token='https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE'
+     export token="https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE"
 else
      echo "Its beta release build"
 fi
 CT="$(pwd)/clang/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+GCC32="$(pwd)/gcc32/bin/arm-unknown-linux-androideabi-"
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
 TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
@@ -37,7 +38,7 @@ function sendinfo() {
                         -d chat_id=-1001158707255 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>SteelHeart CI new build is up</b>!!%0AFor device: <code>Xiaomi Redmi 4A</code>%0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AKernel Version: <code>3.18.140</code>%0AFor Android: <code>8.1-9.0</code>%0ACommit message <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiler: <code>$(${GCC}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
+                        -d text="<b>SteelHeart CI new build is up</b>!!%0AKernel version: <code>Linux 3.18.140</code> %0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0ACommit message <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
 }
 # Send private info
 function sendpriv() {
@@ -45,7 +46,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [<code>$(TZ=Asia/Jakarta date)</code>]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
+                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
 }
 # Push kernel to channel
 function push() {
@@ -70,7 +71,10 @@ function finerr() {
 # Compile plox
 function compile() {
         make -s -C $(pwd) O=out rolex_defconfig
-        make -s -C $(pwd) CC=${CT} CROSS_COMPILE=${GCC} O=out -j60 -l50 2>&1| tee build.log
+        make -s -C $(pwd) CC=${CT} \
+                                         CROSS_COMPILE=${GCC} \
+                                         CROSS_COMPILE_ARM32=${GCC32} \
+                                         O=out -j60 -l50 2>&1| tee build.log
         UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
             if ! [ -a $IMAGE ]; then
                 finerr
@@ -85,7 +89,7 @@ function zipping() {
     if [ "$is_test" = true ]; then
         zip -r9 Steelheart-rolex-ALPHA-"${TANGGAL}".zip *
     else
-        zip -r9 Steelheart-clang-"${TANGGAL}".zip *
+        zip -r9 Steelheart-rolex-"${TANGGAL}".zip *
     fi
     cd ... #uwow
 }
