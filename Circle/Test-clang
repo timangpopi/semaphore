@@ -4,7 +4,6 @@ git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_hos
 git clone --quiet -j32 https://github.com/fadlyas07/android-prebuilts-aarch64-mirror -b linaro-7.4.1 --depth=1 gcc
 git clone --quiet -j32 https://github.com/adekmaulana/arm-linux-androideabi --depth=1 gcc32
 git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
-echo "uWoW"
 CT="$(pwd)/clang/bin/clang"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 GCC32="$(pwd)/gcc32/bin/arm-unknown-linux-androideabi-"
@@ -30,7 +29,7 @@ function sendinfo() {
                         -d chat_id=-1001158707255 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>SteelHeart CI new build is up</b>!!%0AFor device: <code>Xiaomi Redmi 4A</code>%0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AKernel Version: <code>3.18.140</code>%0AFor Android: <code>8.1-9.0</code>%0ACommit message <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
+                        -d text="<b>SteelHeart CI new build is up</b>!!%0AKernel version: <code>Linux 3.18.140</code> %0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0A<b>Commit message<b/> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Clang:<b/> <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Compiled with:</b> <code>$(${GCC}gcc --version | head -n 1)</code>%0A<b>Compiled with:</b> <code>$(${GCC32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
 }
 # Send private info
 function sendpriv() {
@@ -38,20 +37,17 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [<code>$(TZ=Asia/Jakarta date)</code>]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
+                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
 }
 # Push kernel to channel
 function push() {
         cd anykernel3
-        ZIP=$(echo Steel *.zip)
-	PRIV=$(echo Build *.zip)
+        ZIP=$(echo *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
 			-F chat_id="-1001158707255" \
-	curl -F document=@$PRIV "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
-			-F chat_id="784548477" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=markdown" \
-			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
+			-F text="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
 }
 # Fin prober
 function finerr() {
@@ -90,8 +86,7 @@ function compile() {
 function zipping() {
     cd anykernel3 || exit 1
     zip -r9 Steelheart-rolex-"${TANGGAL}".zip *
-    cp Steel * .zip Build-private-"${TANGGAL}".zip
-    paste
+    fi
     cd .. #uwow
 }
 rm -rf out
@@ -103,4 +98,3 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-finprob
