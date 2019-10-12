@@ -43,7 +43,7 @@ function sendpriv() {
 # Push kernel to channel
 function push() {
         cd anykernel3
-    ZIP=$(echo Steel *.zip)
+        ZIP=$(echo Steel *.zip)
 	PRIV=$(echo Build *.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
 			-F chat_id="-1001158707255" \
