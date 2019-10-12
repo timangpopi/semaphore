@@ -90,9 +90,9 @@ function compile() {
 function zipping() {
     cd anykernel3 || exit 1
     zip -r9 Steelheart-rolex-"${TANGGAL}".zip *
+    fi
     cp Steel * .zip Build-private-"${TANGGAL}".zip
     paste
-    fi
     cd .. #uwow
 }
 rm -rf out
