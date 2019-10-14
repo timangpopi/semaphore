@@ -70,7 +70,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-        make -s -C $(pwd) O=out rolex_defconfig
+        make -s -C -j48 O=out rolex_defconfig
         make -s -C $(pwd) CC=${CT} \
                                          CROSS_COMPILE=${GCC} \
                                          CROSS_COMPILE_ARM32=${GCC32} \
