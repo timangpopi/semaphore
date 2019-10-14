@@ -23,7 +23,7 @@ START=$(date +"%s")
 export TZ=":Asia/Jakarta"
 export ARCH=arm64
 export KBUILD_BUILD_USER=Mhmmdfas
-export KBUILD_BUILD_HOST=SteelHeart-CI-${NUM}
+export KBUILD_BUILD_HOST=SteelHeartCI-${NUM}
 export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 # sticker plox
@@ -46,7 +46,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>TAP</a> | #${NUM}."
+                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
 }
 # Push kernel to channel
 function push() {
@@ -65,7 +65,7 @@ function finerr() {
 			-d chat_id="-1001158707255" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s) but it's error..."
+			-d text="Build throw an error(s)."
         exit 1
 }
 # Compile plox
