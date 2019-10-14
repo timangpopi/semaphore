@@ -65,7 +65,6 @@ function compile() {
 function zipping() {
     cd anykernel3 || exit 1
     zip -r9 Steelheart-riva-"${TANGGAL}".zip *
-    fi
     cd ... #uwow
 }
 rm -rf out
