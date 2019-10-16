@@ -70,8 +70,8 @@ function finerr() {
 function compile() {
         make -s -C $(pwd) O=out rolex_defconfig
         make -s -C $(pwd) CROSS_COMPILE=${GCC} \
-                                           CROSS_COMPILE_ARM32=${GCC32} \
-                                           O=out -j60 -l50 2>&1| tee build.log
+                          CROSS_COMPILE_ARM32=${GCC32} \
+                          O=out -j60 -l50 2>&1| tee build.log
         UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
             if ! [ -a $IMAGE ]; then
                 finerr
