@@ -46,7 +46,7 @@ function sendpriv() {
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="SteelHeart new build coming!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+                        -d text="SteelHeart new build for Rolex!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
 }
 # Push kernel to channel
 function push() {
