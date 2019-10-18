@@ -9,7 +9,7 @@ if [ "$is_test" = true ]; then
      unset chat_id
      unset token
      export chat_id=784548477
-     export token="https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE"
+     export token="https://api.telegram.org/bot923829062:AAHAkKpoL-iAdDm6nmp4GPjKhjfxWkTMLPY"
 else
      echo "Its beta release build"
 fi
@@ -28,21 +28,21 @@ export USE_CCACHE=1
 export CACHE_DIR=~/.ccache
 # sticker plox
 function sticker() {
-        curl -s -X POST "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendSticker" \
+        curl -s -X POST "https://api.telegram.org/bot923829062:AAHAkKpoL-iAdDm6nmp4GPjKhjfxWkTMLPY/sendSticker" \
                         -d sticker="CAADBQAD3AADfULDLpHzWZltpdJ5FgQ" \
                         -d chat_id=-1001158707255
 }
 # Send info plox
 function sendinfo() {
-        curl -s -X POST "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage" \
+        curl -s -X POST "https://api.telegram.org/bot923829062:AAHAkKpoL-iAdDm6nmp4GPjKhjfxWkTMLPY/sendMessage" \
                         -d chat_id=-1001158707255 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>SteelHeart CI new build is up</b>!!%0AKernel version: <code>Linux 3.18.140</code> %0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0ACommit message <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
+                        -d text="<b>SteelHeart CI new build is up</b>!!%0AKernel version: <code>Linux 3.18.140</code> %0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AChangelog <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
 }
 # Send private info
 function sendpriv() {
-        curl -s -X POST "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage" \
+        curl -s -X POST "https://api.telegram.org/bot923829062:AAHAkKpoL-iAdDm6nmp4GPjKhjfxWkTMLPY/sendMessage" \
                         -d chat_id=784548477 \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
@@ -52,7 +52,7 @@ function sendpriv() {
 function push() {
         cd anykernel3
 	ZIP=$(echo *.zip)
-	curl -F document=@$ZIP "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendDocument" \
+	curl -F document=@$ZIP "https://api.telegram.org/bot923829062:AAHAkKpoL-iAdDm6nmp4GPjKhjfxWkTMLPY/sendDocument" \
 			-F chat_id="-1001158707255" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -61,11 +61,11 @@ function push() {
 # Fin Error
 function finerr() {
         paste
-        curl -s -X POST "https://api.telegram.org/bot961309167:AAHAtYQIDZgCpL8V_Pn5LYyozC5V0KJy3SE/sendMessage" \
+        curl -s -X POST "https://api.telegram.org/bot923829062:AAHAkKpoL-iAdDm6nmp4GPjKhjfxWkTMLPY/sendMessage" \
 			-d chat_id="-1001158707255" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
-			-d text="Build throw an error(s)."
+			-d text="[ <b>Redmi 4A</b> ]Build throw an error(s)."
         exit 1
 }
 # Compile plox
