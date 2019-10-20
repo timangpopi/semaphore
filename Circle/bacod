@@ -108,5 +108,4 @@ END=$(date +"%s")
 DIFF=$(($END - $START))
 push
 cd ../..
-clean
 # Build end
