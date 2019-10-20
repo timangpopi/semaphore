@@ -97,7 +97,7 @@ function zipping() {
     else
         zip -r9 SteelHeart-rolex-"${TANGGAL}".zip *
     cd ..
-}
+
 rm -rf out
 sticker
 sendinfo
