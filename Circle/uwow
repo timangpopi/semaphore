@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+git clone --quiet -j32 https://github.com/crDroidMod/android_prebuilts_clang_host_linux-x86_clang-5900059 -b 9.0 --depth=1 clang
+git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r49 --depth=1 gcc
+git clone --quiet -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-9.0.0_r49 --depth=1 gcc32
+git clone --quiet -j32 https://github.com/fadlyas07/AnyKernel3 --depth=1 anykernel3
+CT="$(pwd)/clang/bin/clang"
+GCC="$(pwd)/gcc/bin/aarch64-linux-android-"
+GCC32="$(pwd)/gcc32/bin/arm-linux-androideabi-"
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
+NUM=$(echo $CIRCLE_BUILD_NUM | cut -c 1-2)
+TANGGAL=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+START=$(date +"%s")
+export ARCH=arm64
+export KBUILD_BUILD_USER=Mhmmdfas
+export KBUILD_BUILD_HOST=SteelHeartCI-${NUM}
+export USE_CCACHE=1
+export CACHE_DIR=~/.ccache
+# sticker plox
+function sticker() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendSticker" \
+                        -d sticker="CAADBQAD3AADfULDLpHzWZltpdJ5FgQ" \
+                        -d chat_id=${chat_id}
+}
+# Send info plox
+function sendinfo() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+                        -d chat_id=${chat_id} \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="<b>SteelHeart CI new build is up</b>!!%0AKernel version: <code>Linux 3.18.140</code> %0AFrom branch: <code>$(git rev-parse --abbrev-ref HEAD)</code> %0AChangelog <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AClang: <code>$(${CT} --version | head -n 1 | perl -pe 's/\(https.*?\)//gs' | sed -e 's/  */ /g')</code>%0ACompiled with: <code>$(${GCC}gcc --version | head -n 1)</code>%0ACompiled with: <code>$(${GCC32}gcc --version | head -n 1)</code>%0AStarted on: <code>$(TZ=Asia/Jakarta date)</code>%0A<b>Build Status:</b> #Untested"
+}
+# Send private info
+function sendpriv() {
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+                        -d chat_id=${my_id} \
+                        -d "disable_web_page_preview=true" \
+                        -d "parse_mode=html" \
+                        -d text="SteelHeart new build for Rolex!%0ACompile di mulai pada [ <code>$(TZ=Asia/Jakarta date)</code> ]%0ALink CI <a href='${CIRCLE_BUILD_URL}'>here</a> | #${NUM}."
+}
+# Push kernel to channel
+function push() {
+        cd anykernel3
+	ZIP=$(echo *.zip)
+	curl -F document=@$ZIP "https://api.telegram.org/bot${token}/sendDocument" \
+			-F chat_id="${chat_id}" \
+			-F "disable_web_page_preview=true" \
+			-F "parse_mode=html" \
+			-F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). <b>For Xiaomi Redmi 4A</b> [ <code>$UTS</code> ]"
+}
+# Fin Error
+function finerr() {
+        paste
+        curl -s -X POST "https://api.telegram.org/bot${token}/sendMessage" \
+			-d chat_id="${chat_id}" \
+			-d "disable_web_page_preview=true" \
+			-d "parse_mode=markdown" \
+			-d text="Build throw an error(s)."
+        exit 1
+}
+# Compile plox
+function compile() {
+        make -s -C $(pwd) O=out rolex_defconfig
+        make -s -C $(pwd) CC=${CT} \
+                                         CROSS_COMPILE=${GCC} \
+                                         CROSS_COMPILE_ARM32=${GCC32} \
+                                         O=out -j60 -l50 2>&1| tee build.log
+        UTS=$(cat out/include/generated/compile.h | grep UTS_VERSION | cut -d '"' -f2)
+            if ! [ -a $IMAGE ]; then
+                finerr
+                exit 1
+            fi
+        cp out/arch/arm64/boot/Image.gz-dtb anykernel3/zImage
+        paste
+}
+# Fin prober
+function fin() {
+	tg_sendinfo "$(echo "Build took $((${DIFF} / 60)) minute(s) and $((${DIFF} % 60)) seconds.")"
+}
+# Clean stuff
+function clean() {
+	rm -rf out anykernel3/Steel* anykernel3/zImage
+}
+# Zipping
+function zipping() {
+    cd anykernel3 || exit 1
+    zip -r9 SteelHeart-rolex-"${TANGGAL}".zip *
+    cd .. #uwow
+}
+rm -rf out
+sticker
+sendinfo
+sendpriv
+compile
+zipping
+END=$(date +"%s")
+DIFF=$(($END - $START))
+push
+cd ../..
+fin
+clean
+# Build end
